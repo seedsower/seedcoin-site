@@ -2,10 +2,15 @@
 
 import { ReactNode } from 'react'
 import dynamic from 'next/dynamic'
-import { Web3Provider } from './Web3Provider'
 
-// Solana wallet adapters use browser-only APIs (indexedDB, localStorage).
-// Load them dynamically with ssr:false to avoid SSR errors.
+// Both wallet providers use browser-only APIs (indexedDB, localStorage,
+// crypto.subtle) at module evaluation time.  Load them with ssr:false so
+// they are never evaluated in Netlify's serverless runtime.
+const Web3Provider = dynamic(
+  () => import('./Web3Provider').then((m) => m.Web3Provider),
+  { ssr: false }
+)
+
 const SolanaProvider = dynamic(
   () => import('./SolanaProvider').then((m) => m.SolanaProvider),
   { ssr: false }
