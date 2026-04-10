@@ -1,0 +1,89 @@
+---
+title: "SeedCoin Expands to Solana"
+date: "2024-09-15"
+author: "Tom Westlund"
+cover: "/images/blog/solana-expansion.jpg"
+tags: ["Announcement", "Solana", "Technical"]
+excerpt: "SEED tokens are now live on Solana. We explain why we chose Solana for the SPL token, how the bridge works, and what it means for SUSD."
+---
+
+Today we're announcing that SEED tokens are live on Solana. This has been in the works for about eight months, and we're excited to finally be here.
+
+Here's what happened, why it matters, and what comes next.
+
+## Why Solana?
+
+When we originally deployed on Ethereum, gas fees were a constant friction point. A $40 gas fee to move $50 worth of SEED doesn't make sense for most users — especially the agricultural communities we most want to reach, who are often price-sensitive.
+
+Solana solves this. Transaction fees on Solana are fractions of a cent. The network is fast (400ms block times), has been battle-tested for several years, and has a thriving DeFi ecosystem through Jupiter, Orca, and others.
+
+We evaluated several alternatives:
+
+- **Polygon (EVM):** Good option, well-understood. We may bridge here eventually, but Solana has better raw throughput and a more distinct ecosystem.
+- **Arbitrum / Optimism:** Good for Ethereum users, but still EVM fees compared to Solana.
+- **Base:** Growing rapidly, but newer infrastructure.
+
+Solana won for the combination of speed, cost, and ecosystem maturity.
+
+## How the bridge works
+
+The Solana SEED token is a Wormhole-bridged SPL token. Here's the basic architecture:
+
+1. You lock ERC-20 SEED in the Wormhole bridge contract on Ethereum.
+2. Wormhole's guardian network signs an attestation.
+3. You mint an equivalent quantity of SPL SEED on Solana.
+
+The Solana SEED is fully collateralized 1:1 by locked Ethereum SEED. You can always bridge back.
+
+<Callout type="warning">
+Always verify the contract addresses on this site before swapping. There are scam tokens on both networks using the SeedCoin name. The official addresses are listed on the SEED token page.
+</Callout>
+
+The bridge UI is available through the Wormhole portal, with direct links from our token page. We'll build a native bridge UI on this site in Q4 2024.
+
+## What this means for SUSD
+
+SUSD is currently Ethereum-only. We're evaluating Solana SUSD, but we want to get the Ethereum architecture right first — including the audit — before expanding.
+
+The Solana SEED expansion gives us a larger user base and more liquidity, which will eventually strengthen SUSD's stability mechanisms. But we're not rushing it.
+
+## Technical architecture notes
+
+For the technically inclined:
+
+The Solana SEED mint authority is controlled by a multisig using Squads Protocol. Three of five signers from the core team and security council are required for any mint or freeze actions.
+
+The Wormhole bridge is the same infrastructure used by UST, USDC, and dozens of other major cross-chain assets. It has been audited by Neodyme, Asymmetric Research, and OtterSec.
+
+We've done internal testing and a limited beta. The full Solana rollout is live as of today.
+
+## How to get Solana SEED
+
+If you already hold Ethereum SEED:
+
+1. Bridge using the Wormhole portal (link on our token page).
+2. Connect your Phantom or Solflare wallet.
+3. The bridged SEED will appear in your Solana wallet.
+
+If you're new to SeedCoin:
+
+1. Get SOL from Coinbase, Kraken, or another exchange.
+2. Connect to Jupiter (jup.ag).
+3. Swap SOL for SEED using the SPL contract address from our token page.
+
+## What's next
+
+The Solana expansion is one step on a longer path. Here's what we're focused on for the next six months:
+
+- **Native bridge UI** on seedcoin.org — no more third-party portals.
+- **Jupiter integration** — SEED listed as a featured token for discoverability.
+- **Solana DeFi partnerships** — exploring liquidity pools on Orca and Raydium.
+- **Ethereum audit** — the most important item on the list. Scheduled for Q2 2025.
+
+Thank you to everyone who tested the bridge during the beta, provided feedback on the UI, and generally believed in this long enough for us to get here.
+
+More soon.
+
+---
+
+*Tom Westlund is the founder of SeedCoin. Follow updates on Twitter @seedcoin or in the Discord.*
