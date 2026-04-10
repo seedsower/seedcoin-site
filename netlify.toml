@@ -5,10 +5,13 @@
 [build.environment]
   NODE_VERSION = "20"
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+# Do NOT declare @netlify/plugin-nextjs here.
+# Netlify auto-installs "Essential Next.js" for Next.js projects and manages
+# static asset routing, edge functions, and ISR automatically.
+# Declaring the plugin manually causes a version conflict that breaks
+# /_next/static/* routing (all assets 404 with text/html).
 
-# Headers for security + performance
+# Security headers
 [[headers]]
   for = "/*"
   [headers.values]
@@ -16,11 +19,6 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-
-[[headers]]
-  for = "/fonts/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "/_next/static/*"
@@ -32,16 +30,9 @@
   [headers.values]
     Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
 
-# Redirect /docs to GitBook (phase-2: migrate in-house to Fumadocs)
+# Redirect /docs to GitBook
 [[redirects]]
   from = "/docs"
   to = "https://seedcoin.gitbook.io/seedcoin"
   status = 302
   force = true
-
-# SPA-style catch-all handled by Next.js — not needed but explicit for clarity
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  conditions = {Role = ["admin"]}
