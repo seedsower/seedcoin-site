@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Background -->
+  <rect width="32" height="32" rx="6" fill="#1a1410"/>
+  <!-- Seed shape -->
+  <ellipse cx="16" cy="18" rx="8" ry="5.5" stroke="#3d7a3a" stroke-width="1.5" fill="none"/>
+  <!-- Stem -->
+  <line x1="16" y1="12.5" x2="16" y2="6" stroke="#3d7a3a" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Left leaf -->
+  <path d="M16 10 C11 7 8 10 11 13 C12.5 14.5 16 13 16 10Z" fill="#3d7a3a"/>
+  <!-- Right leaf -->
+  <path d="M16 8.5 C21 5.5 24 8.5 21 11.5 C19.5 13 16 11.5 16 8.5Z" fill="#4e9a4b"/>
+  <!-- Radicle dots -->
+  <circle cx="12.5" cy="21.5" r="1" fill="#c9a961" opacity="0.7"/>
+  <circle cx="16" cy="23" r="1" fill="#c9a961" opacity="0.7"/>
+  <circle cx="19.5" cy="21.5" r="1" fill="#c9a961" opacity="0.7"/>
+</svg>
