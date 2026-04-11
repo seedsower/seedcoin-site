@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Sprout } from 'lucide-react'
+import Image from 'next/image'
 import { NewsletterForm } from './NewsletterForm'
 
 const LINKS = {
@@ -75,9 +75,14 @@ export function Footer() {
         {/* Top: brand + newsletter */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           <div>
-            <Link href="/" className="flex items-center gap-2.5 mb-4 w-fit">
-              <Sprout size={26} className="text-germ" strokeWidth={1.5} />
-              <span className="font-display text-lg text-husk">SeedCoin</span>
+            <Link href="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
+              <Image
+                src="/images/seedcoin-logo.png"
+                alt="SeedCoin"
+                width={120}
+                height={34}
+                className="h-8 w-auto"
+              />
             </Link>
             <p className="text-stone-2 text-sm leading-relaxed max-w-xs">
               A currency backed by real seeds held in certified seed banks.

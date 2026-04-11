@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Menu, X, Sprout } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { WalletConnect } from './WalletConnect'
 import { cn } from '@/lib/utils'
 
@@ -54,18 +55,15 @@ export function Header() {
       <div className="container-editorial">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Wordmark */}
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 text-husk hover:text-germ-2 transition-colors group"
-          >
-            <Sprout
-              size={28}
-              className="text-germ group-hover:text-germ-2 transition-colors"
-              strokeWidth={1.5}
+          <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
+            <Image
+              src="/images/seedcoin-logo.png"
+              alt="SeedCoin"
+              width={140}
+              height={40}
+              className="h-9 w-auto"
+              priority
             />
-            <span className="font-display text-xl tracking-tight leading-none">
-              SeedCoin
-            </span>
           </Link>
 
           {/* Desktop nav */}
