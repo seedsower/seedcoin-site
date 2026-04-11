@@ -27,7 +27,7 @@ function postFromFile(filePath: string, slug: string): BlogPost {
     title: data.title ?? 'Untitled',
     date: data.date ?? new Date().toISOString().slice(0, 10),
     author: data.author ?? 'SeedCoin',
-    cover: data.cover ?? '/images/blog/default-cover.jpg',
+    cover: data.cover ?? '/images/blog/default-cover.png',
     tags: Array.isArray(data.tags) ? data.tags : [],
     excerpt: data.excerpt ?? '',
     readingTime: rt.text,

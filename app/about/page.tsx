@@ -209,7 +209,7 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-8 items-start">
             <div className="relative w-28 h-28 flex-shrink-0 rounded-full overflow-hidden border-2 border-germ/40">
               <Image
-                src="/images/team/tom-westlund.jpg"
+                src="/images/team/tom-westlund.png"
                 alt="Tom Westlund, SeedCoin founder"
                 fill
                 className="object-cover"
