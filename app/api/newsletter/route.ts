@@ -1,5 +1,7 @@
-import type { Config, Context } from '@netlify/functions'
 import { getStore } from '@netlify/blobs'
+
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -10,9 +12,7 @@ function json(data: unknown, status = 200) {
   })
 }
 
-export default async (req: Request, _ctx: Context) => {
-  if (req.method !== 'POST') return json({ error: 'Method not allowed' }, 405)
-
+export async function POST(req: Request) {
   let body: Record<string, unknown>
   try {
     body = await req.json()
@@ -28,5 +28,3 @@ export default async (req: Request, _ctx: Context) => {
 
   return json({ ok: true })
 }
-
-export const config: Config = { path: '/api/newsletter' }
