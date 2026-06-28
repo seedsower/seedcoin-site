@@ -11,12 +11,6 @@ interface NewsletterFormProps {
   className?: string
 }
 
-function encode(data: Record<string, string>) {
-  return Object.keys(data)
-    .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
-    .join('&')
-}
-
 export function NewsletterForm({ variant = 'inline', className }: NewsletterFormProps) {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<Status>('idle')
@@ -30,10 +24,10 @@ export function NewsletterForm({ variant = 'inline', className }: NewsletterForm
     setErrorMsg('')
 
     try {
-      const res = await fetch('/', {
+      const res = await fetch('/api/newsletter', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': 'newsletter', email }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
       })
 
       if (!res.ok) {
@@ -67,16 +61,10 @@ export function NewsletterForm({ variant = 'inline', className }: NewsletterForm
 
   return (
     <form
-      name="newsletter"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
       onSubmit={handleSubmit}
       className={cn('flex flex-col gap-2', className)}
       noValidate
     >
-      <input type="hidden" name="form-name" value="newsletter" />
-      <p hidden><label>Don't fill this out: <input name="bot-field" /></label></p>
-
       <div
         className={cn(
           'flex gap-2',

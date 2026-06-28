@@ -14,12 +14,6 @@ const INQUIRY_OPTIONS: { value: InquiryType; label: string }[] = [
   { value: 'seed-bank', label: 'Seed bank partner' },
 ]
 
-function encode(data: Record<string, string>) {
-  return Object.keys(data)
-    .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
-    .join('&')
-}
-
 export function ContactForm({ defaultType }: { defaultType?: InquiryType }) {
   const [form, setForm] = useState({
     name: '',
@@ -42,10 +36,10 @@ export function ContactForm({ defaultType }: { defaultType?: InquiryType }) {
     setErrorMsg('')
 
     try {
-      const res = await fetch('/', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': 'contact', ...form }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
       })
 
       if (!res.ok) {
@@ -82,16 +76,10 @@ export function ContactForm({ defaultType }: { defaultType?: InquiryType }) {
 
   return (
     <form
-      name="contact"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
       onSubmit={handleSubmit}
       className="space-y-5"
       noValidate
     >
-      <input type="hidden" name="form-name" value="contact" />
-      <p hidden><label>Don't fill this out: <input name="bot-field" /></label></p>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label htmlFor="contact-name" className="block text-xs text-stone uppercase tracking-wider mb-2">
