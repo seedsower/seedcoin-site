@@ -11,12 +11,18 @@ interface NewsletterFormProps {
   className?: string
 }
 
+function encode(data: Record<string, string>) {
+  return Object.keys(data)
+    .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
+    .join('&')
+}
+
 export function NewsletterForm({ variant = 'inline', className }: NewsletterFormProps) {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<Status>('idle')
   const [errorMsg, setErrorMsg] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: { preventDefault(): void }) => {
     e.preventDefault()
     if (!email || status === 'loading') return
 
@@ -24,16 +30,14 @@ export function NewsletterForm({ variant = 'inline', className }: NewsletterForm
     setErrorMsg('')
 
     try {
-      const res = await fetch('/api/newsletter', {
+      const res = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encode({ 'form-name': 'newsletter', email }),
       })
 
-      const data = await res.json()
-
       if (!res.ok) {
-        setErrorMsg(data.error ?? 'Something went wrong. Please try again.')
+        setErrorMsg('Something went wrong. Please try again.')
         setStatus('error')
         return
       }
@@ -63,10 +67,16 @@ export function NewsletterForm({ variant = 'inline', className }: NewsletterForm
 
   return (
     <form
+      name="newsletter"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
       onSubmit={handleSubmit}
       className={cn('flex flex-col gap-2', className)}
       noValidate
     >
+      <input type="hidden" name="form-name" value="newsletter" />
+      <p hidden><label>Don't fill this out: <input name="bot-field" /></label></p>
+
       <div
         className={cn(
           'flex gap-2',
@@ -79,6 +89,7 @@ export function NewsletterForm({ variant = 'inline', className }: NewsletterForm
         <input
           id="newsletter-email"
           type="email"
+          name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"

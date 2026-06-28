@@ -14,6 +14,12 @@ const INQUIRY_OPTIONS: { value: InquiryType; label: string }[] = [
   { value: 'seed-bank', label: 'Seed bank partner' },
 ]
 
+function encode(data: Record<string, string>) {
+  return Object.keys(data)
+    .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
+    .join('&')
+}
+
 export function ContactForm({ defaultType }: { defaultType?: InquiryType }) {
   const [form, setForm] = useState({
     name: '',
@@ -24,26 +30,26 @@ export function ContactForm({ defaultType }: { defaultType?: InquiryType }) {
   const [status, setStatus] = useState<Status>('idle')
   const [errorMsg, setErrorMsg] = useState('')
 
-  const set = (k: keyof typeof form) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => setForm((prev) => ({ ...prev, [k]: e.target.value }))
+  const set =
+    (k: keyof typeof form) =>
+    (e: { target: { value: string } }) =>
+      setForm((prev) => ({ ...prev, [k]: e.target.value }))
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: { preventDefault(): void }) => {
     e.preventDefault()
     if (status === 'loading') return
     setStatus('loading')
     setErrorMsg('')
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encode({ 'form-name': 'contact', ...form }),
       })
-      const data = await res.json()
 
       if (!res.ok) {
-        setErrorMsg(data.error ?? 'Something went wrong. Please try again.')
+        setErrorMsg('Something went wrong. Please try again.')
         setStatus('error')
         return
       }
@@ -75,7 +81,17 @@ export function ContactForm({ defaultType }: { defaultType?: InquiryType }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+    <form
+      name="contact"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      onSubmit={handleSubmit}
+      className="space-y-5"
+      noValidate
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      <p hidden><label>Don't fill this out: <input name="bot-field" /></label></p>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label htmlFor="contact-name" className="block text-xs text-stone uppercase tracking-wider mb-2">
@@ -84,6 +100,7 @@ export function ContactForm({ defaultType }: { defaultType?: InquiryType }) {
           <input
             id="contact-name"
             type="text"
+            name="name"
             value={form.name}
             onChange={set('name')}
             placeholder="Tom Westlund"
@@ -99,6 +116,7 @@ export function ContactForm({ defaultType }: { defaultType?: InquiryType }) {
           <input
             id="contact-email"
             type="email"
+            name="email"
             value={form.email}
             onChange={set('email')}
             placeholder="you@example.com"
@@ -115,6 +133,7 @@ export function ContactForm({ defaultType }: { defaultType?: InquiryType }) {
         </label>
         <select
           id="contact-type"
+          name="type"
           value={form.type}
           onChange={set('type')}
           disabled={status === 'loading'}
@@ -134,6 +153,7 @@ export function ContactForm({ defaultType }: { defaultType?: InquiryType }) {
         </label>
         <textarea
           id="contact-message"
+          name="message"
           value={form.message}
           onChange={set('message')}
           placeholder="Tell us what you're thinking…"
